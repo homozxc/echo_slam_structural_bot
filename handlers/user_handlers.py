@@ -2,12 +2,12 @@ from aiogram import Router
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 from lexicon.lexicon import LEXICON_RU
-from kinopoisk_dev import KinopoiskDev
-from config_data.config import Config, load_config
+from config_data.config import create_kp
 
 # Инициализируем роутер уровня модуля
 router: Router = Router()
-config: Config = load_config()
+kp = create_kp()
+
 
 # Этот хэндлер срабатывает на команду /start
 @router.message(CommandStart())
@@ -23,6 +23,5 @@ async def process_help_command(message: Message):
 
 @router.message(Command(commands='random'))
 async def process_help_command(message: Message):
-    kp = KinopoiskDev(token=config.kp_token)
     item = kp.random()
     await message.answer(text=f'{item.name}')
